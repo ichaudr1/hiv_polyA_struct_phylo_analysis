@@ -41,6 +41,8 @@ strain_file = ''
 #--> Parameters for ClustalW alignment and Tree formation
 clustal_path = ''
 phyml_path = ''
+bootstrap = 1
+phylo_target = 'env'
 
 
 #--> Output
@@ -52,13 +54,25 @@ os.mkdir(folder + output_id)
 output_root = folder + output_id + '/{item}'
 
 
-def pol(accession):
+def fetch_phylo(accession, target='env'):
     '''
-    Will download the genebank record for the accession and return the pol gene.
+    Will download the genebank record for the accession and return the sequence for the target gene.
+
+    Parameters
+    ----------
+    accession: str
+        The genome of interest
+    target: str
+        The name of the gene that should be retrieved. Must be CDS target. 
+    
+    Returns
+    -------
+    target_seq: str
+        The sequence found in the target genome for the target gene. None if not found.
     '''
 
     std_aa = ['G', 'A', 'L', 'M', 'F', 'W', 'K', 'Q', 'E', 'S', 'P', 'V', 'I', 'C', 'Y', 'H', 'R', 'N', 'D', 'T']
-    pol_seq = None
+    target_seq = None
     try:
     
         results = Entrez.read(Entrez.efetch(db='nuccore', id=accession, rettype='gbwithparts', retmode='xml'))
@@ -69,32 +83,32 @@ def pol(accession):
 
     for feat in results[0]['GBSeq_feature-table']:
         if feat['GBFeature_key'] == 'CDS':
-            is_pol = False
+            target_found = False
             for quality in feat['GBFeature_quals']:
                 if quality['GBQualifier_name'] == 'gene':
-                    if 'env' in str(quality['GBQualifier_value']).lower().strip():
-                        is_pol = True
+                    if target in str(quality['GBQualifier_value']).lower().strip():
+                        target_found = True
                 if quality['GBQualifier_name'] == 'note':
-                    if 'env' in str(quality['GBQualifier_value']).lower().strip():
-                        is_pol = True
+                    if target in str(quality['GBQualifier_value']).lower().strip():
+                        target_found = True
                 if quality['GBQualifier_name'] == 'product':
-                    if 'env' in str(quality['GBQualifier_value']).lower().strip():
-                        is_pol = True
-                if not is_pol:
+                    if target in str(quality['GBQualifier_value']).lower().strip():
+                        target_found = True
+                if not target_found:
                     continue
                 if quality['GBQualifier_name'] == 'translation':
-                    pol_seq = str(quality['GBQualifier_value']).upper()
+                    target_seq = str(quality['GBQualifier_value']).upper()
     
-    if pol_seq == None:
+    if target_seq == None:
         return None
     
     to_return = ''
-    for a in pol_seq:
+    for a in target_seq:
         if a in std_aa:
             to_return = to_return + a
     return to_return
 
-def get_polymerase_seqs(targets, output_file=output_root.format(item='polymerase_seqs.fasta')):
+def get_target_seqs(targets, output_file=output_root.format(item='phylo_target_seqs.fasta')):
     '''
     Saves the polymerase sequences for all the accessions that are passed in to 1 FASTA file. This is used for the phylogenetic tree. 
 
@@ -111,12 +125,12 @@ def get_polymerase_seqs(targets, output_file=output_root.format(item='polymerase
     to_write = []
 
     for t in tqdm(targets, desc='Getting polymerase seqs'):
-        pol_seq = pol(t[0])
-        if pol_seq == None:
+        phylo_seq = fetch_phylo(t[0])
+        if phylo_seq == None:
             print('No polymerase found for ', t[1])
             continue
         
-        to_write.append(SeqRecord(Seq(pol_seq), id=t[0]))
+        to_write.append(SeqRecord(Seq(phylo_seq), id=t[0]))
     
     with open(output_file, 'w+') as file:
         SeqIO.write(to_write, file, 'fasta')
@@ -282,22 +296,24 @@ if __name__ == '__main__':
     #--> Parameters for ClustalW alignment and Tree formation
     clustal_path = inputs['alignment_tree']['clustal_path']
     phyml_path = inputs['alignment_tree']['phyml_path']
+    bootstrap = inputs['params']['bootstrap']
+    phylo_target = inputs['params']['phylo_gene']
 
     #Load target strains
     target_strains = json.load(open(strain_file, 'r'))
     
     #Get polymerase sequences for each strain
-    polymerase_output_file = output_root.format(item='polymerase_seqs.fasta')
-    get_polymerase_seqs([(t['accession'] , str(t['subtype'] + '-' + t['accession'])) for t in target_strains], polymerase_output_file)
+    phylo_target_output_file = output_root.format(item='phylo_target_seqs.fasta')
+    get_target_seqs([(t['accession'] , str(t['subtype'] + '-' + t['accession'])) for t in target_strains], phylo_target_output_file)
 
     #Algin polymerase sequences
-    print('Aligning polymerase sequences...')
-    aligned_polymerase_output_file = output_root.format(item='aligned_polymerase_seqs.fasta')
-    clustalw_cmd = ClustalwCommandline(cmd=clustal_path, infile=polymerase_output_file, outfile=aligned_polymerase_output_file, type='PROTEIN', output='FASTA')
+    print('Aligning' + phylo_target + ' sequences...')
+    aligned_phylo_target_output_file = output_root.format(item='aligned_phylo_target_seqs.fasta')
+    clustalw_cmd = ClustalwCommandline(cmd=clustal_path, infile=phylo_target_output_file, outfile=aligned_phylo_target_output_file, type='PROTEIN', output='FASTA')
     clustalw_cmd()
 
-    aligned_polymerase_output_file_phylip = output_root.format(item='aligned_polymerase_seqs.phylip')
-    clustalw_cmd = ClustalwCommandline(cmd=clustal_path, infile=polymerase_output_file, outfile=aligned_polymerase_output_file_phylip, type='PROTEIN', output='PHYLIP')
+    aligned_phylo_target_output_file_phlip = output_root.format(item='aligned_phylo_target_seqs.phylip')
+    clustalw_cmd = ClustalwCommandline(cmd=clustal_path, infile=phylo_target_output_file, outfile=aligned_phylo_target_output_file_phlip, type='PROTEIN', output='PHYLIP')
     clustalw_cmd()
 
     '''
@@ -309,9 +325,9 @@ if __name__ == '__main__':
     #Make phylogenetic tree
     print('Constructing Maximum Likelihood Tree...')
     tree_file = output_root.format(item='tree.nh')
-    phyml_cmd = PhymlCommandline(cmd=phyml_path, datatype='aa', input=aligned_polymerase_output_file_phylip, bootstrap=inputs['params']['bootstrap'])
+    phyml_cmd = PhymlCommandline(cmd=phyml_path, datatype='aa', input=aligned_phylo_target_output_file_phlip, bootstrap=inputs['params']['bootstrap'])
     phyml_cmd()
-    os.rename(src=aligned_polymerase_output_file_phylip +'_phyml_tree.txt', dst=tree_file)
+    os.rename(src=aligned_phylo_target_output_file_phlip +'_phyml_tree.txt', dst=tree_file)
 
     #Replacing the accessions to include the subtype in the tree
     tree_renaming = open(tree_file, 'r').readline()

@@ -7,6 +7,7 @@
         "phyml_path": "/Users/ichaudr/Documents/programming_projects/hiv_rna_struct_phylo_analysis/dependencies/PhyML-3.1/PhyML-3.1_macOS-MountainLion"
     },
     "params":{
-        "bootstrap":1
+        "bootstrap":1,
+        "phylo_gene":"env"
     }
 }

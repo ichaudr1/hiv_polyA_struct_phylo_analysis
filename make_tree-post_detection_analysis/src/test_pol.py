@@ -1,5 +1,5 @@
-from make_tree import pol
+from make_tree import fetch_phylo
 
 accession = 'AF110978'
 
-print(pol(accession))
+print(fetch_phylo(accession))

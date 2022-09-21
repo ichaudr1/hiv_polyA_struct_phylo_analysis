@@ -1,0 +1,1 @@
+{'no_ltr': 5025, 'no_pa_signal': 11076, 'no_pa_discovered': 41, 'starting_seqs': 17455}

@@ -309,7 +309,7 @@ if __name__ == '__main__':
     #Make phylogenetic tree
     print('Constructing Maximum Likelihood Tree...')
     tree_file = output_root.format(item='tree.nh')
-    phyml_cmd = PhymlCommandline(cmd=phyml_path, datatype='aa', input=aligned_polymerase_output_file_phylip, bootstrap=1)
+    phyml_cmd = PhymlCommandline(cmd=phyml_path, datatype='aa', input=aligned_polymerase_output_file_phylip, bootstrap=inputs['params']['bootstrap'])
     phyml_cmd()
     os.rename(src=aligned_polymerase_output_file_phylip +'_phyml_tree.txt', dst=tree_file)
 

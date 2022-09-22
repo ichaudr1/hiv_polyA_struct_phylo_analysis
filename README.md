@@ -11,3 +11,5 @@ There are three main components of the pipeline and each is seperated into a sep
 - ##### make_tree-post_detection_analysis
 - ##### concensus_structure-post_detection_analysis
 
+---
+### polyA_detection

@@ -1,0 +1,5 @@
+*.pp linguist-detectable=false
+*.json linguist-detectable=false
+*.svg linguist-detectable=false
+*.txt linguist-detectable=false
+*.ps linguist-detectable=false

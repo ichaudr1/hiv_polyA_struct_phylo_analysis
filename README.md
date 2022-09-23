@@ -2,14 +2,16 @@
 
 ### Goal: to analyze the structural conservation of the 5' polyA hairpin the HIV genome.
 
+Code used for the analysis in [insert paper citation/title]
+
 `insert figure here (i.e. graphical abstract)`
 
-#### Approach
+#### Pipeline
 There are three main components of the pipeline and each is seperated into a seperate directory in the repository. Each component is described further. 
 
-- ##### polyA_detection
-- ##### make_tree-post_detection_analysis
-- ##### concensus_structure-post_detection_analysis
+- polyA_detection
+- make_tree-post_detection_analysis
+- concensus_structure-post_detection_analysis
 
 ---
 ### polyA_detection
@@ -44,3 +46,55 @@ Input file (parameters are explained in '<< >>' - do not include brackets in fil
 }
 
 ```
+
+This will output representative strains from the major HIV subtypes. 
+
+### make_tree-post_detection-analysis
+Goal: Using the output from the polyA detection to construct an annotated phylogenetic tree.
+
+`insert graphic describing discovery pipeline`
+
+Requirements: `phyml`, `clustalo`
+
+Input file (parameters are explained in '<< >>' - do not include brackets in file when running):
+
+```json
+{   
+    "paths":{
+        "strain_info":"" <<Path to the output from the polyA detection pipeline.>>
+    },
+    "alignment_tree": {
+        "clustal_path": "", <<Path to the clustalo exectuable.>>
+        "phyml_path": "" <<Path to the phyml executable>>
+    },
+    "params":{
+        "bootstrap":1, <<# of bootstrap replicates for the MLH tree>>
+        "phylo_gene":"env" <<Target gene to be used to construct the phylogeny>>
+    }
+}
+```
+
+This will output a SVG with the tree. 
+
+### concensus_structure-post_detection_analysis
+Goal: Using the output from the polyA detection to determine the concensus structure and visualize the variation via frequency plot. 
+
+Note: the concensus structure is determined using the locarna package. 
+
+Input file (parameters are explained in '<< >>' - do not include brackets in file when running):
+
+```json
+{   
+    "concensus_sequence":"CACUGCUUAAGCCUCAAUAAAGCUUGCCUUGAGUGCUUHAAHURGUG", <<Concensus sequence outputted by locarna - ignoring gaps>>
+    "concensus_vstr":"(((((((((((((((((...........))))).)))).))))))))", << Vstr for the concensus sequence outputted by locarna - ignoring gaps>>
+    "target_strains_path":"", <<Path to the JSON file with all the strains to be used in the frequency calculations>>
+    "colors":{"AU": "#f5c31d", "GC": "#3e4b94", "GU": "#852a2a"} <<Colors to use for the occurence of each base pair type in the frequecy bars>>
+}
+```
+
+This will output a SVG with a bar per position of the hairpin alignments showing the frequncy of each base pair type that is present there. 
+
+Note: Hairpins are aligned and compared using a modified Needleman-Wunch algorithm. See paper methods for more details.
+
+`insert figure describing hairpin alignment method`
+

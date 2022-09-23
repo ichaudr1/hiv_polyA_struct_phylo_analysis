@@ -14,7 +14,7 @@ There are three main components of the pipeline and each is seperated into a sep
 - concensus_structure-post_detection_analysis
 
 ---
-### polyA_detection
+## polyA_detection
 Goal: Parse out the putative polyA hairpin from a set of target HIV genomes using de novo discovery method described below. 
 
 `insert graphic describing discovery pipeline`
@@ -49,7 +49,7 @@ Input file (parameters are explained in '<< >>' - do not include brackets in fil
 
 This will output representative strains from the major HIV subtypes. 
 
-### make_tree-post_detection-analysis
+## make_tree-post_detection-analysis
 Goal: Using the output from the polyA detection to construct an annotated phylogenetic tree.
 
 `insert graphic describing discovery pipeline`
@@ -76,7 +76,7 @@ Input file (parameters are explained in '<< >>' - do not include brackets in fil
 
 This will output a SVG with the tree. 
 
-### concensus_structure-post_detection_analysis
+## concensus_structure-post_detection_analysis
 Goal: Using the output from the polyA detection to determine the concensus structure and visualize the variation via frequency plot. 
 
 Note: the concensus structure is determined using the locarna package. 

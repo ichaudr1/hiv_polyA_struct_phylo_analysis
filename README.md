@@ -81,7 +81,7 @@ Input file (parameters are explained in '<< >>' - do not include brackets in fil
 
 ```json
 {   
-    "concensus_sequence":"CACUGCUUAAGCCUCAAUAAAGCUUGCCUUGAGUGCUUHAAHURGUG", <<Concensus sequence outputted by locarna - ignoring gaps>>
+    "concensus_sequence":"CACUGCUUAAGCCUCAAUAAAGCUUGCCUUGAGUGCUUHAAGURGUG", <<Concensus sequence outputted by locarna - ignoring gaps>>
     "concensus_vstr":"(((((((((((((((((...........))))).)))).))))))))", << Vstr for the concensus sequence outputted by locarna - ignoring gaps>>
     "target_strains_path":"", <<Path to the JSON file with all the strains to be used in the frequency calculations>>
     "colors":{"AU": "#f5c31d", "GC": "#3e4b94", "GU": "#852a2a"} <<Colors to use for the occurence of each base pair type in the frequecy bars>>

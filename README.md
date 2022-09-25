@@ -95,3 +95,8 @@ Note: Hairpins are aligned and compared using a modified Needleman-Wunch algorit
 
 ![insert figure describing hairpin alignment method](./assets/sup2.svg)
 
+---
+
+## Usage
+Set up a conda environment using the `mfs_lab.yml` configuration file. The usage for each component of the pipline follows the format `[main_file].py input.json`
+

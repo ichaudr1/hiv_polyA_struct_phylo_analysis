@@ -4,8 +4,6 @@
 
 Code used for the analysis in [insert paper citation/title]
 
-`insert figure here (i.e. graphical abstract)`
-
 #### Pipeline
 There are three main components of the pipeline and each is seperated into a seperate directory in the repository. Each component is described further. 
 
@@ -17,7 +15,7 @@ There are three main components of the pipeline and each is seperated into a sep
 ## polyA_detection
 Goal: Parse out the putative polyA hairpin from a set of target HIV genomes using de novo discovery method described below. 
 
-`insert graphic describing discovery pipeline`
+![insert graphic describing discovery pipeline](./assets/sup1.svg)
 
 Requirements: `viennaRNA`, `clustalo`
 
@@ -51,8 +49,6 @@ This will output representative strains from the major HIV subtypes.
 
 ## make_tree-post_detection-analysis
 Goal: Using the output from the polyA detection to construct an annotated phylogenetic tree.
-
-`insert graphic describing discovery pipeline`
 
 Requirements: `phyml`, `clustalo`
 
@@ -96,5 +92,6 @@ This will output a SVG with a bar per position of the hairpin alignments showing
 
 Note: Hairpins are aligned and compared using a modified Needleman-Wunch algorithm. See paper methods for more details.
 
-`insert figure describing hairpin alignment method`
+
+![insert figure describing hairpin alignment method](./assets/sup2.svg)
 

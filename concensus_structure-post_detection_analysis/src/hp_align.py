@@ -185,7 +185,7 @@ def rhelix_align_verbose(hp_one, hp_two):
     print(hp_two_len)
     print(scores)
 
-    rows = []
+    rows = [['']]
     for i in range(-1, hp_one_len):
         row = []
         for j in range(-1, hp_two_len):
@@ -438,7 +438,7 @@ hp_two = [
 ]
 
 
-hp_one = [
+'''hp_one = [
     ('U', 'A'),
     ('C', 'G'),
     ('C', 'G'),
@@ -451,6 +451,6 @@ hp_two = [
     ('-', 'U'),
     ('U', 'A'),
     ('G', 'C')
-]
+]'''
 #print(rhelix_align_verbose(hp_one, hp_two))
 print_rhelix_aln(hp_one, hp_two, rhelix_align_verbose(hp_one, hp_two)[0])

@@ -5,6 +5,7 @@ Takes a list of base pairs in two RNA hairpin structres, and returns an alignmen
 
 from itertools import product
 from collections import deque
+import csv
 
 
 def rhelix_align(hp_one, hp_two):
@@ -36,9 +37,9 @@ def rhelix_align(hp_one, hp_two):
     scores[-1, -1] = 0
 
     for i in range(hp_one_len):
-        scores[i, - 1] = -i
+        scores[i, - 1] = -(i+1)
     for j in range(hp_two_len):
-        scores[-1, j] = -j
+        scores[-1, j] = -(j+1)
 
     #The current table of scores looks like this now: 
     #  0  -1  -2  -3  -4 .... -hp_one_len
@@ -90,6 +91,110 @@ def rhelix_align(hp_one, hp_two):
         alignment.appendleft((None, j))
         j -= 1
     
+    return (list(alignment), scores[hp_one_len - 1, hp_two_len - 1])
+
+
+def rhelix_align_verbose(hp_one, hp_two):
+    '''
+    Returns an alignment between two RNA hairpin structures. The algorithm mimics the Needleman-Wunsch algorithm for sequence alignment; however, it has been adapted for aligning base pairs in a RNA helix.
+
+    **Prints out the dynamic programming grid to follow intermediate scoring**
+
+    Parameters
+    ----------
+    hp_one, hp_two: The two hairpins of interest. These must be a list of tuples representing the base pairs in the helix from "bottom to top".
+    For example, the hairpin below would be passed in as: [ (A, U) , (G, C), (C, G), (U, A), (U, -), (U - A)]
+    U-A
+    U
+    U-A
+    C-G
+    G-C
+    A-U
+    '''
+
+    hp_one_len, hp_two_len = len(hp_one), len(hp_two)
+
+    #Constants that hold values for the dx and dy during the traceback. 
+    DIAG = (-1,-1)
+    UP = (0, -1)
+    LEFT = (-1, 0)
+
+    #Set up two tables: one to hold the values of each posistion and another to hold the instructions for how to backtrace that movement (i.e. Diagonal, DOWN->UP, and RIGHT->LEFT)
+    scores = {}
+    tracing_pointers = {}
+
+    scores[-1, -1] = 0
+
+    for i in range(hp_one_len):
+        scores[i, - 1] = -(i+1)
+    for j in range(hp_two_len):
+        scores[-1, j] = -(j+1)
+
+    #The current table of scores looks like this now: 
+    #  0  -1  -2  -3  -4 .... -hp_one_len
+    # -1
+    # -2
+    # -3
+    # .
+    # .
+    # .
+    # -len_y
+
+    #Calculate the scores and populate the scores and tracing_pointers list
+    pointer_options = DIAG, LEFT, UP
+    for i, j in product(range(hp_one_len), range(hp_two_len)):
+
+        possible_scores = (
+            scores[i - 1, j - 1] + get_base_pair_score(hp_one[i], hp_two[j]),
+            scores[i - 1, j] - 1,
+            scores[i, j - 1] - 1
+        )
+
+        scores[i, j] , tracing_pointers[i, j] = max(zip(possible_scores, pointer_options))
+
+    #Find the optimal path to determine the alignment
+    alignment = deque()
+
+    i, j = hp_one_len - 1, hp_two_len - 1
+
+    while i >= 0 and j >= 0:
+        trace_dir = tracing_pointers[i, j]
+
+        if trace_dir == DIAG:
+            alignment_element = (i, j)
+        elif trace_dir == LEFT:
+            alignment_element = (i, None)
+        elif trace_dir == UP:
+            alignment_element = (None, j)
+        
+        alignment.appendleft(alignment_element)
+
+        i = i + trace_dir[0]
+        j = j + trace_dir[1]
+
+    while i >= 0:
+        alignment.appendleft((i, None))
+        i -= 1
+    
+    while j >= 0:
+        alignment.appendleft((None, j))
+        j -= 1
+    
+
+    print(hp_one_len)
+    print(hp_two_len)
+    print(scores)
+
+    rows = []
+    for i in range(-1, hp_one_len):
+        row = []
+        for j in range(-1, hp_two_len):
+            row.append(str(scores[i, j]))
+        rows.append(row)
+    with open('test.csv', 'w+') as f:
+        fwriter = csv.writer(f)
+        fwriter.writerows(rows)
+
     return (list(alignment), scores[hp_one_len - 1, hp_two_len - 1])
 
 
@@ -306,7 +411,7 @@ def print_rhelix_aln(pairs1, pairs2, aln):
 
 
 
-'''
+
 hp_one = [
     ('A', 'U'),
     ('G', 'C'),
@@ -331,5 +436,21 @@ hp_two = [
     ('-', 'A'),
     ('-', 'C')
 ]
-print(rhelix_align(hp_one, hp_two))
-#print_alignment(hp_one, hp_two, rhelix_align(hp_one, hp_two))'''
+
+
+hp_one = [
+    ('U', 'A'),
+    ('C', 'G'),
+    ('C', 'G'),
+    ('C', '-'),
+    ('C', 'G')
+]
+hp_two = [
+    ('U', 'A'),
+    ('G', 'C'),
+    ('-', 'U'),
+    ('U', 'A'),
+    ('G', 'C')
+]
+#print(rhelix_align_verbose(hp_one, hp_two))
+print_rhelix_aln(hp_one, hp_two, rhelix_align_verbose(hp_one, hp_two)[0])

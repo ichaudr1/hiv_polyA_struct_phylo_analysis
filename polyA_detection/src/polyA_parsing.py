@@ -533,10 +533,10 @@ if __name__ == '__main__':
     rep_strains = get_rep_strains(input_ltrs=[l for l in all_five_ltrs if l['pa_seq'] != None])
 
     for ltr in all_five_ltrs:
-        if ltr['subtype'] not in rep_strains.keys():
-            continue
         if ltr["accession"] in strains_force_include:
             ltr['representative'] = 1
+            continue
+        if ltr['subtype'] not in rep_strains.keys():
             continue
         ltr['representative'] = int(ltr['accession'] in [l['accession'] for l in rep_strains[ltr['subtype']]])
 
@@ -611,8 +611,8 @@ if __name__ == '__main__':
         json.dump(to_write_json, file)
     
     #Write out all strains with identified polyAs to a fasta file to be used in locarna analysis
-    records_to_write = [SeqRecord(Seq(s['pa_seq'], id=s['subtype'] + '-' + s['accession']) for s in all_five_ltrs if s['pa_seq'] != None)]
-    SeqIO.write(records_to_write, open(output_root.format(id='all_pas.fasta'), 'w+'), 'fasta')
+    records_to_write = [SeqRecord(Seq(s['pa_seq']), id=s['subtype'] + '-' + s['accession']) for s in all_five_ltrs if s['pa_seq'] != None]
+    SeqIO.write(records_to_write, open(output_root.format(item='all_pas.fasta'), 'w+'), 'fasta')
 
     #Write the stats file
     with open(output_root.format(item='stats.txt'), 'w+') as file:

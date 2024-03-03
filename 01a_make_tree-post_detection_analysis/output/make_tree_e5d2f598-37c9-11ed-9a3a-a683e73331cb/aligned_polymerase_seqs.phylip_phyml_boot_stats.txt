@@ -1,0 +1,12 @@
+. Sequence file : [aligned_polymerase_seqs.phylip]
+
+. Model of amino acids substitution : LG
+
+. Initial tree : [BioNJ]
+
+
+. Data	Nb of 	Likelihood	Discrete   	Number of 	Gamma shape	Proportion of	Nucleotides frequencies               	
+  set	taxa	loglk     	gamma model	categories	parameter  	invariant    	f(A)      f(C)      f(G)      f(T)    	
+
+  #1	19   	-8246.42249	Yes        	4        	0.272    	0.000    	
+

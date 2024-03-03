@@ -1,6 +1,0 @@
-{   
-    "concensus_sequence":"CACUGCUUAAGCCUCAAUAAAGCUUGCCUUGAGUGCUUHAAGURGUG",
-    "concensus_vstr":"(((((((((((((((((...........))))).)))).))))))))",
-    "target_strains_path":"/Users/ichaudr/Documents/programming_projects/hiv_rna_struct_phylo_analysis/polyA_detection/output/polyA_parse_08120dfe-3899-11ed-9239-a683e73331cb/raw_output.json",
-    "colors":{"AU": "#f5c31d", "GC": "#3e4b94", "GU": "#852a2a"}
-}

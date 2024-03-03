@@ -336,21 +336,21 @@ def gag_position(accession, cache='../gag_pos_cache/'):
     try:
 
         for feat in genebank_data['GBSeq_feature-table']:
-            if feat['GBFeature_key'] == 'CDS':
-                is_gag = False
-                for quality in feat['GBFeature_quals']:
-                    if quality['GBQualifier_name'] == 'gene':
-                        if 'gag' in str(quality['GBQualifier_value']).lower().strip():
-                            is_gag = True
-                    if quality['GBQualifier_name'] == 'note':
-                        if 'gag' in str(quality['GBQualifier_value']).lower().strip():
-                            is_gag = True
-                    if quality['GBQualifier_name'] == 'product':
-                        if 'gag' in str(quality['GBQualifier_value']).lower().strip():
-                            is_gag = True
-                    
-                if is_gag:
-                    gag_interval = feat['GBFeature_intervals']
+            #if feat['GBFeature_key'] == 'CDS':
+            is_gag = False
+            for quality in feat['GBFeature_quals']:
+                if quality['GBQualifier_name'] == 'gene':
+                    if 'gag' in str(quality['GBQualifier_value']).lower().strip():
+                        is_gag = True
+                if quality['GBQualifier_name'] == 'note':
+                    if 'gag' in str(quality['GBQualifier_value']).lower().strip():
+                        is_gag = True
+                if quality['GBQualifier_name'] == 'product':
+                    if 'gag' in str(quality['GBQualifier_value']).lower().strip():
+                        is_gag = True
+                
+            if is_gag:
+                gag_interval = feat['GBFeature_intervals']
 
     except:
         print('Genebank data for ' + accession + ' could not be parsed')

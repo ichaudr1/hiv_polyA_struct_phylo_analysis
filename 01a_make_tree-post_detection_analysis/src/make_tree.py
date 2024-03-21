@@ -183,7 +183,7 @@ def make_face(strain_id, pa_seq, vienna_str, path):
                 dwg.add(dwg.rect(insert=(x, y-(font_size)), size=size, fill=color))
             else:
                 #dwg.add(dwg.rect(insert=(x, y-(font_size)), size=(font_size, font_size), fill=color))
-                dwg.add(dwg.rect(insert=(x, y-(font_size)), size=size, fill=color, fill_opacity=0.25, stroke=color, stroke_width=5))
+                dwg.add(dwg.rect(insert=(x, y-(font_size)), size=size, fill=color, fill_opacity=0.25, stroke=color, stroke_width=0))
         else:
             dwg.add(dwg.line(start=(x + (.25*font_size), .5*font_size), end=(x+(.75*font_size),.5*font_size), stroke=color, stroke_width=15))
             #dwg.add(dwg.rect(insert=(x, y-(.5*font_size)), size=(font_size, font_size*.15), stroke=color))

@@ -161,7 +161,7 @@ def make_face(strain_id, pa_seq, vienna_str, path):
     #ext_pa_seq = tstrain_info['locorna_pa']
     vstr = vienna_str
 
-    font_size = 50
+    font_size = 100
     y = 55
     x = 0
     dwg = svgwrite.Drawing(path + strain_id + '_face.svg', profile='full', size=(5000, 60))

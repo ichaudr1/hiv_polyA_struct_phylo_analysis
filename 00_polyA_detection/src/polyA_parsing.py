@@ -43,8 +43,8 @@ import statistics
 ##############
 
 #--> Entrez authentication
-Entrez.email = 'ichaudr1@umbc.edu'
-Entrez.api_key = 'cd2f5bf7a67d086647ec33da2c985e018d08'
+Entrez.email = ''
+Entrez.api_key = ''
 
 #--> Paths
 ### Path to full genomes

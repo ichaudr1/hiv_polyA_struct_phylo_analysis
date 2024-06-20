@@ -12,8 +12,8 @@ from Bio import pairwise2
 from Bio import Entrez
 from tqdm import tqdm
 
-Entrez.email = 'ichaudr1@umbc.edu'
-Entrez.api_key = 'cd2f5bf7a67d086647ec33da2c985e018d08'
+Entrez.email = ''
+Entrez.api_key = ''
 
 def get_percent_matches(seq1, seq2, scoring={'match':2, 'mismatch':-1, 'gap_open':-1, 'gap_extd': -0.5}):
     '''

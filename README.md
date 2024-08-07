@@ -2,7 +2,7 @@
 
 ### Goal: to analyze the structural conservation of the 5' polyA hairpin the HIV genome.
 
-Code used for the analysis in [insert paper citation/title]
+Code used for the analysis in ![https://doi.org/10.1073/pnas.2407400121]
 
 #### Pipeline
 There are three main components of the pipeline and each is seperated into a seperate directory in the repository. Each component is described further. 

@@ -2,7 +2,8 @@
 
 ### Goal: to analyze the structural conservation of the 5' polyA hairpin the HIV genome.
 
-Code used for the analysis in https://doi.org/10.1073/pnas.2407400121
+Code used for the analysis in Yasin, S., Lesko, S., Kharytonchyk, S., Brown, J., Chaudry, I. et al. Role of RNA structural plasticity in modulating HIV-1 genome packaging and translation. Proc. Natl. Acad. Sci. 121, (2024).
+https://doi.org/10.1073/pnas.2407400121
 
 #### Pipeline
 There are three main components of the pipeline and each is seperated into a seperate directory in the repository. Each component is described further. 
